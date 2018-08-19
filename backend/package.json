@@ -19,7 +19,8 @@
     "react-dom": "^16.4.1",
     "truffle": "^4.1.11",
     "truffle-contract": "^3.0.5",
-    "web3": "^1.0.0-beta.34"
+    "web3": "^1.0.0-beta.34",
+    "websocket": "^1.0.26"
   },
   "meteor": {
     "mainModule": {
