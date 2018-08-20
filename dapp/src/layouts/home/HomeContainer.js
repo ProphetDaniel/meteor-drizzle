@@ -3,6 +3,7 @@ import { drizzleConnect } from 'drizzle-react'
 import PropTypes from 'prop-types'
 
 import { callAddTodo } from '../todos/TodoAsyncActions';
+import {setLoggedUser, unsetLoggedUser} from '../login/LoginActions';
 
 // May still need this even with data function to refresh component on updates for this contract.
 const mapStateToProps = state => {
@@ -18,6 +19,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   dispatchCallAddTodo: data => dispatch(callAddTodo(data)),
+  dispatchSetLoggedUser: data => dispatch(setLoggedUser(data)),
+  dispatchUnsetLoggedUser: data => dispatch(unsetLoggedUser()),
 });
 
 Home.contextTypes = {

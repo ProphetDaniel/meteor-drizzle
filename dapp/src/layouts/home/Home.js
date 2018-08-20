@@ -14,6 +14,7 @@ class Home extends Component {
     this.renderTasks = this.renderTasks.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleCreateUser = this.handleCreateUser.bind(this);
   }
   handleAddTodo(e) {
     if (e.key === 'Enter') {
@@ -26,7 +27,23 @@ class Home extends Component {
     }
   }
   handleLogout() {
+    console.log("Logged out!");
+    this.props.dispatchUnsetLoggedUser();
     asteroid.logout();
+  }
+  handleCreateUser(e){
+    // this.context.drizzle.web3.eth.sign(hash, this.props.accounts[0], (err,res) => console.log(err,res))
+    e.preventDefault();
+    const hash = this.context.drizzle.web3.utils.sha3(e.target.username.value);
+    console.log(hash);
+
+    asteroid.call('createUser', {
+      username: e.target.username.value,
+      password: hash,
+    }).then((result) => {console.log(result)})
+      .catch((error) => {
+        console.error(error.message);
+      });
   }
   handleLogin(e) {
     // this.context.drizzle.web3.eth.sign(hash, this.props.accounts[0], (err,res) => console.log(err,res))
@@ -41,6 +58,7 @@ class Home extends Component {
       .catch((error) => {
         console.error(error.message);
     });
+    this.props.dispatchSetLoggedUser(e.target.username.value);
   }
   renderTasks() {
     if (this.props.user && this.props.user.username) {
@@ -73,6 +91,7 @@ class Home extends Component {
     }
     else {
       return (
+        <div>
         <form onSubmit={this.handleLogin}>
           <div>
             <input type="text" name="username" defaultValue={this.props.accounts[0]} />
@@ -86,6 +105,20 @@ class Home extends Component {
             <button type="submit">Login</button>
           </div>
         </form>
+          <form onSubmit={this.handleCreateUser}>
+            <div>
+              <input type="text" name="username" defaultValue={this.props.accounts[0]} />
+            </div>
+            {/*
+          <div>
+            <input type="password" name="password" placeholder="Password" />
+          </div>
+          */}
+            <div>
+              <button type="submit">CreateUser</button>
+            </div>
+          </form>
+          </div>
       )
     }
   }
